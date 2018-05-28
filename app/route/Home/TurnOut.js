@@ -106,7 +106,7 @@ class TurnOut extends React.Component {
             EasyToast.show('请输入收款账号');
             return;
         }
-        if (this.state.toAccount.length != 12) {
+        if (this.state.toAccount.length > 12) {
             EasyToast.show('请输入正确的收款账号');
             return;
         }
@@ -115,10 +115,10 @@ class TurnOut extends React.Component {
             return;
         }
 
-        if (this.state.amount > this.state.balance) {
-            EasyToast.show('转账金额超出账户余额');
-            return;
-        }
+        // if (this.state.amount > this.state.balance) {
+        //     EasyToast.show('转账金额超出账户余额');
+        //     return;
+        // }
 
         this._setModalVisible();
 
@@ -143,7 +143,7 @@ class TurnOut extends React.Component {
 
                 if (plaintext_privateKey.indexOf('eostoken') != -1) {
                     plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
-                    Eos.transfer('dds', this.state.toAccount, this.state.amount + " EOS", "", plaintext_privateKey, false, (r) => {
+                    Eos.transfer(this.props.defaultWallet.account, this.state.toAccount, this.state.amount + " EOS", "", plaintext_privateKey, false, (r) => {
                         this.props.dispatch({
                             type: 'wallet/pushTransaction', payload: r.data.transaction, callback: (data) => {
                                 if (data.code == '0') {

@@ -45,8 +45,8 @@ class Set extends React.Component {
       EasyToast.show('请输入钱包名称');
       return;
     }
-    if (this.state.walletName.length != 12) {
-      EasyToast.show('EOS账户名称长度必须为12位');
+    if (this.state.walletName.length > 12) {
+      EasyToast.show('EOS账户长度不能超过12位');
       return;
     }
     if (this.state.walletPassword == "") {
