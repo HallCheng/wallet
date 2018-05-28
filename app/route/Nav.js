@@ -50,7 +50,6 @@ require('moment/locale/zh-cn');
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 
-import Eosjs from '../components/eosjs/Eosjs'
 var WeChat = require('react-native-wechat');
 
 const TabContainer = TabNavigator(
@@ -415,7 +414,6 @@ class Route extends React.Component {
   render() {
 
     return (<View style={{ flex: 1 }}>
-      <Eosjs />
       <Nav ref="nav" onNavigationStateChange={(prevNav, nav, action) => { this.switchRoute(prevNav, nav, action) }} />
       {this.state.showShare ? (
         <View style={{ position: 'absolute', zIndex: 100000, top: 0, left: 0, width: ScreenWidth, height: ScreenHeight, backgroundColor: 'rgba(0,0,0,0.8)' }}>
