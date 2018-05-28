@@ -39,3 +39,6 @@ npm run android
 
 ios:
 npm run ios
+
+npm version:3.10.10
+node version:v6.11.2
