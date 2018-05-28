@@ -97,7 +97,7 @@ class Set extends React.Component {
         this.props.dispatch({
           type: 'wallet/createAccountService', payload: { username: result.account, owner: result.data.ownerPublic, active: result.data.activePublic }, callback: (data) => {
             EasyLoading.dismis();
-            alert(JSON.stringify(data));
+            // alert(JSON.stringify(data));
             if (data.code == '0') {
               this.props.dispatch({
                 type: 'wallet/saveWallet', wallet: result, callback: (data) => {

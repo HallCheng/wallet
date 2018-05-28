@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import Barcode from 'react-native-smart-barcode'
 
+import { EasyToast } from '../../components/Toast';
+
 import PropTypes from 'prop-types'
 
 export default class App extends React.Component {
@@ -53,10 +55,10 @@ export default class App extends React.Component {
                 this.props.navigation.goBack();
                 navigate('TurnOut', { coins: coins });
             } else {
-                alert('无效的二维码');
+                EasyToast.show('无效的二维码');
             }
         } catch (error) {
-            alert('无效的二维码');
+            EasyToast.show('无效的二维码');
         }
         // Alert.alert("二维码", e.nativeEvent.data.code, [
         //     {text: '确认', onPress: () => this._startScan()},
