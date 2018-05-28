@@ -1,0 +1,4 @@
+*.rdb
+build/
+app/my-release-key.keystore
+.gradle/
