@@ -3,7 +3,6 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import { EasyToast } from '../../components/Toast';
 import React, { Component } from 'react';
 import {
     Platform,
