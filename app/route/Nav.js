@@ -50,7 +50,6 @@ require('moment/locale/zh-cn');
 var ScreenWidth = Dimensions.get('window').width;
 var ScreenHeight = Dimensions.get('window').height;
 
-import Eosjs from '../components/eosjs/Eosjs'
 var WeChat = require('react-native-wechat');
 
 const TabContainer = TabNavigator(
