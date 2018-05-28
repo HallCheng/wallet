@@ -63,7 +63,9 @@ class Home extends React.Component {
         type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.name, symbol: 'EOS' }, callback: (data) => {
           if (data.code == '0') {
             if (data.data == "") {
-              this.setState({ balance: '0.0000 EOS' })
+              this.setState({ balance: '0.0000 EOS',
+            account:this.props.defaultWallet.name
+            })
             } else {
               this.setState({ balance: data.data })
             }
@@ -247,7 +249,7 @@ class Home extends React.Component {
                         <Text style={{ color: '#F45353', fontSize: 12, textAlign: 'center', }}>提示：扫码同样可获取地址</Text>
                         <View style={{ margin: 10, alignItems: 'center', justifyContent: 'center', alignItems: 'center', flexDirection: "row", }}>
                           <View style={{ flex: 1, }} />
-                          <QRCode size={200} style={{ width: 200, }} value={'{\"contract\":\"eos\",\"toaccount\":\"' + (this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name + '\",\"symbol\":\"EOS\"}'} />
+                          <QRCode size={200} style={{ width: 200, }} value={'{\"contract\":\"eos\",\"toaccount\":\"' + ((this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name) + '\",\"symbol\":\"EOS\"}'} />
                           <View style={{ flex: 1, }} />
                         </View>
                         <Button onPress={() => { this.copy() }}>
