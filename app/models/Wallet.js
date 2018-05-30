@@ -7,6 +7,7 @@ import { DeviceEventEmitter } from 'react-native';
 import { Eos } from "react-native-eosjs";
 import { createAccount, pushTransaction, getBalance, getInfo } from '../utils/Api';
 import { pay } from 'react-native-wechat';
+import JPushModule from 'jpush-react-native';
 
 export default {
     namespace: 'wallet',
@@ -166,7 +167,11 @@ export default {
             DeviceEventEmitter.emit('key_created');
             yield call(store.save, 'defaultWallet', _wallet);
             yield put({ type: 'updateDefaultWallet', payload: { defaultWallet: _wallet } });
-            DeviceEventEmitter.emit('wallet_backup', _wallet);
+            // DeviceEventEmitter.emit('wallet_backup', _wallet);
+            JPushModule.addTags([_wallet.name], map => {
+
+            })
+            if (callback) callback(_wallet);
         },
         *importPrivateKey({ payload, callback }, { call, put }) {
             var AES = require("crypto-js/aes");
@@ -236,6 +241,7 @@ export default {
                     }
                 }
             }
+            DeviceEventEmitter.emit('updateDefaultWallet');
         }, *getDefaultWallet({ payload, callback }, { call, put }) {
             var defaultWallet = yield call(store.get, 'defaultWallet');
             if (callback) callback({ defaultWallet });
@@ -266,6 +272,12 @@ export default {
             DeviceEventEmitter.emit('wallet_backup', payload);
             yield put({ type: 'updateDefaultWallet', payload: { defaultWallet: payload.data } });
         }, *createAccountService({ payload, callback }, { call, put }) {
+            var defaultWallet = yield call(store.get, 'defaultWallet');
+            if (defaultWallet != null && defaultWallet.account != null) {
+                if (callback) callback({ code: '500',data:'暂时不支持创建更多账号' });
+                // DeviceEventEmitter.emit('wallet_10');
+                return;
+            }
             try {
                 const resp = yield call(Request.request, createAccount, 'post', payload);
                 if (callback) callback(resp);

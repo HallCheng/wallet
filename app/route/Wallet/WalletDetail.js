@@ -68,7 +68,7 @@ class Set extends React.Component {
           <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" selectionColor="#65CAFF"
             secureTextEntry={true}
             keyboardType="ascii-capable" style={{ color: '#65CAFF', marginLeft: 10, width: 120, height: 45, fontSize: 15, backgroundColor: '#EFEFEF' }}
-            placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" maxLength={8} />
+            placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" />
         </View>
 
       EasyDialog.show("密码", view, "确定", "取消", () => {
@@ -136,7 +136,7 @@ class Set extends React.Component {
         <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" selectionColor="#65CAFF"
           secureTextEntry={true}
           keyboardType="ascii-capable" style={{ color: '#65CAFF', marginLeft: 10, width: 120, height: 45, fontSize: 15, backgroundColor: '#EFEFEF' }}
-          placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" maxLength={8} />
+          placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" />
       </View>
 
     EasyDialog.show("密码", view, "确定", "取消", () => {
@@ -177,7 +177,7 @@ class Set extends React.Component {
         <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" selectionColor="#65CAFF"
           secureTextEntry={true}
           keyboardType="ascii-capable" style={{ color: '#65CAFF', marginLeft: 10, width: 120, height: 45, fontSize: 15, backgroundColor: '#EFEFEF' }}
-          placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" maxLength={8} />
+          placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent"/>
       </View>
 
     EasyDialog.show("密码", view, "备份", "取消", () => {

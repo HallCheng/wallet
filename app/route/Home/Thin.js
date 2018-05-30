@@ -145,11 +145,11 @@ class Thin extends React.Component {
                                 <Text style={styles.titleText}>添加地址</Text> 
                                 <View style={{ paddingLeft:20, height: 40,  marginBottom: 10,  justifyContent:'center', }} >
                                     <TextInput  value={this.state.labelname} 
-                                      onChangeText={(labelname) => this.setState({ labelname })} returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#999999', fontSize: 14, height: 50, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="输入标签名称" underlineColorAndroid="transparent" keyboardType="phone-pad" maxLength={20}/>
+                                      onChangeText={(labelname) => this.setState({ labelname })} returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#999999', fontSize: 14, height: 50, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="输入标签名称" underlineColorAndroid="transparent" />
                                 </View>    
                                 <View style={{ paddingLeft:20, height: 40,  marginBottom: 10,  justifyContent:'center', }} >
                                     <TextInput value={this.state.address}
-                                     onChangeText={(address) => this.setState({ address })} returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#999999', fontSize: 14, height: 50, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="粘贴收款人地址" underlineColorAndroid="transparent" keyboardType="phone-pad" />
+                                     onChangeText={(address) => this.setState({ address })} returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#999999', fontSize: 14, height: 50, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="粘贴收款人地址" underlineColorAndroid="transparent" />
                                 </View>                               
                                                                                                         
                                 <Button onPress={() => this.confirm() }>

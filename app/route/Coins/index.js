@@ -56,7 +56,9 @@ class Coins extends React.Component {
        }
     });
     DeviceEventEmitter.addListener('coinSlefChange', (tab) => {
-      dispatch({type:'sticker/list',payload:{type:0}});
+      dispatch({type:'sticker/list',payload:{type:0},callback:()=>{
+        
+      }});
    });
    //推送初始化
    const { navigate } = this.props.navigation;

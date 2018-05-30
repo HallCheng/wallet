@@ -85,6 +85,7 @@ class Set extends React.Component {
       wordsStr_active = wordsStr_active + "," + words_active[i];
     }
     const { navigate } = this.props.navigation;
+    this.clearFoucs();
     EasyLoading.show('正在请求');
     Eos.seedPrivateKey(wordsStr_owner, wordsStr_active, (result) => {
       if (result.isSuccess) {
@@ -105,7 +106,10 @@ class Set extends React.Component {
                   if (data.error != null) {
                     EasyToast.show('生成账号失败：' + data.error);
                   } else {
-                    EasyToast.show('生成账号成功：' + data.error);
+                    EasyToast.show('生成账号成功：');
+                    this.props.navigation.goBack();
+                    const { navigate } = this.props.navigation;
+                    navigate('BackupNote', data);
                   }
                 }
               });
@@ -116,6 +120,7 @@ class Set extends React.Component {
           }
         })
       } else {
+        EasyLoading.dismis();
       }
 
     });
@@ -123,16 +128,14 @@ class Set extends React.Component {
     DeviceEventEmitter.addListener('wallet_10', () => {
       EasyToast.show('您不能创建更多钱包账号了');
     });
-    DeviceEventEmitter.addListener('wallet_backup', (data) => {
-      this.props.navigation.goBack();
-      const { navigate } = this.props.navigation;
-      navigate('BackupNote', data);
-    });
+    // DeviceEventEmitter.addListener('wallet_backup', (data) => {
+
+    // });
   }
 
 
   chkPrice(obj) {
-    var reg = /^[a-zA-Z]+$/;
+    var reg = /^[a-z]+$/;
     if (!reg.test(obj)) {
       obj = obj.substr(0, obj.length - 1);
     };
@@ -179,6 +182,14 @@ class Set extends React.Component {
     });
   }
 
+
+  clearFoucs = () => {
+    this._raccount.blur();
+    this._lpass.blur();
+    this._lrpass.blur();
+    this._lnote.blur();
+  }
+
   transfer() {
     Eos.transfer("tt", "marco", "1.0000 EOS", "", "5JqqwFTALaJPVtSRNhsVFFN5de7d6j239YSVDMeKfNHXYc5F2oP", false, (r) => {
       // Eos.transfer("sbtc1", "alice", "1.0000 EOS", "", "5KU35XDjUmMKCLybK9xyx88ygSsDscUDk7hLGqvqPSUkFxTEFLF", false, (r) => {
@@ -190,18 +201,6 @@ class Set extends React.Component {
       });
     });
   }
-
-  // getinfo() {
-  //   Eos.getInfo((r) => {
-  //     alert('Eos.getInfo' + JSON.stringify(r));
-  //   });
-  // }
-
-  // createKey() {
-  //   Eos.seedPrivateKey((r) => {
-  //     alert('Eos.getInfo' + JSON.stringify(r));
-  //   });
-  // }
 
   getx(arr) {
     for (var i = 0; i > -1; i++) {
@@ -242,7 +241,8 @@ class Set extends React.Component {
         <View style={{ backgroundColor: '#43536D' }}>
           <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
             <TextInput returnKeyType="next" selectionColor="#65CAFF"
-              style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="钱包名称"
+              ref={(ref) => this._raccount = ref}
+              style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="账号名称(只能输入小写字母)"
               underlineColorAndroid="transparent" keyboardType="default"
               // onChangeText={(walletName) => this.setState({ walletName })}
               value={this.state.walletName}
@@ -259,7 +259,7 @@ class Set extends React.Component {
           </View>
           <View style={{ height: 0.5, backgroundColor: '#43536D', flex: 1, flexDirection: 'column', }}></View>
           <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
-            <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
+            <TextInput ref={(ref) => this._lrpass = ref} autoFocus={false} editable={true}
               returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0"
               placeholder="重复密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
               onChangeText={(reWalletPassword) => this.setState({ reWalletPassword })}
@@ -267,7 +267,7 @@ class Set extends React.Component {
           </View>
           <View style={{ height: 0.5, backgroundColor: '#43536D', flex: 1, flexDirection: 'column', }}></View>
           <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
-            <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
+            <TextInput ref={(ref) => this._lnote = ref} autoFocus={false} editable={true}
               value={this.state.passwordNote}
               returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0"
               placeholder="密码提示(可不填)" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}

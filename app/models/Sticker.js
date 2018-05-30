@@ -11,7 +11,7 @@ export default {
         coinSelf:{}
     },
     effects: {
-      *list({payload},{call,put}) {
+      *list({payload,callback},{call,put}) {
         try{
           const resp = yield call(Request.request,sticker,'get');
           if(resp.code=='0'){
@@ -19,6 +19,7 @@ export default {
           }else{
             EasyToast.show(resp.msg);
           }
+          if (callback) callback();
         }catch(err){
           EasyToast.show('网络发生错误，请重试');
         }

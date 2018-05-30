@@ -40,7 +40,7 @@ class Set extends React.Component {
                 <TextInput autoFocus={true} onChangeText={(password) => this.setState({ password })} returnKeyType="go" selectionColor="#65CAFF"
                     secureTextEntry={true}
                     keyboardType="ascii-capable" style={{ color: '#65CAFF', marginLeft: 10, width: 120, height: 45, fontSize: 15, backgroundColor: '#EFEFEF' }}
-                    placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent" maxLength={8} />
+                    placeholderTextColor="#8696B0" placeholder="请输入密码" underlineColorAndroid="transparent"/>
             </View>
 
         EasyDialog.show("密码", view, "备份", "取消", () => {
@@ -49,6 +49,7 @@ class Set extends React.Component {
                 EasyToast.show('请输入密码');
                 return;
             }
+            try{
             var _words = this.props.navigation.state.params.words;
             var bytes_words = CryptoJS.AES.decrypt(_words.toString(), this.state.password + this.props.navigation.state.params.salt);
             var plaintext_words = bytes_words.toString(CryptoJS.enc.Utf8);
@@ -69,6 +70,9 @@ class Set extends React.Component {
                 // alert('密码错误');
                 EasyToast.show('密码错误');
             }
+        }catch(e){
+            EasyToast.show('密码错误');
+        }
             EasyDialog.dismis();
         }, () => { EasyDialog.dismis() });
     }

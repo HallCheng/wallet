@@ -35,20 +35,26 @@ const init = (navigation) => {
     });
     //收到消息
     JPushModule.addReceiveNotificationListener(map => {
-        //alert(JSON.stringify(map))
+
+        let extras = JSON.parse(map.extras);
+        if (extras.url.startsWith("transfer://")) {
+            DeviceEventEmitter.emit('wallet_info')
+        }
     });
     //点击通知
     JPushModule.addReceiveOpenNotificationListener(map => {
-        let extras =  JSON.parse(map.extras);
-        if(extras && extras.url){
-            if(extras.url.startsWith("http://") || extras.url.startsWith("https://")){
-                navigation("Web",{title:map.alertContent,url:extras.url});
-            }else if(extras.url.startsWith("eostoken://")){
-                let nav = extras.url.replace("eostoken://","")
-                navigation(nav,extras.params?extras.params:{});
-            }else if(extras.url.startsWith("alert://")){
-                EasyDialog.show("温馨提示",map.alertContent,"知道了",null,()=>{EasyDialog.dismis()});
-            }else{
+        let extras = JSON.parse(map.extras);
+        if (extras && extras.url) {
+            if (extras.url.startsWith("http://") || extras.url.startsWith("https://")) {
+                navigation("Web", { title: map.alertContent, url: extras.url });
+            } else if (extras.url.startsWith("eostoken://")) {
+                let nav = extras.url.replace("eostoken://", "")
+                navigation(nav, extras.params ? extras.params : {});
+            } else if (extras.url.startsWith("alert://")) {
+                EasyDialog.show("温馨提示", map.alertContent, "知道了", null, () => { EasyDialog.dismis() });
+            } else if (extras.url.startsWith("transfer://")) {
+
+            } else {
 
             }
         }

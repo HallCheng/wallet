@@ -240,11 +240,15 @@ class News extends React.Component {
   }
 
   renderSwipeView() {
-    return this.props.banners.map((item, i) => {
-      return (<Button key={i} onPress={this.bannerPress.bind(this, item)}>
-        <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-      </Button>)
-    })
+    if (this.props.banners != null) {
+      return this.props.banners.map((item, i) => {
+        return (<Button key={i} onPress={this.bannerPress.bind(this, item)}>
+          <Image source={{ uri: item.img }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+        </Button>)
+      })
+    }else{
+      return (<View></View>)
+    }
   }
 
   render() {
@@ -259,14 +263,16 @@ class News extends React.Component {
             {this.renderSwipeView()}
           </Swiper>
         </View>
-        <TabViewAnimated
+        {
+          this.state.routes &&   <TabViewAnimated
           lazy={true}
           navigationState={this.state}
           renderScene={this.renderScene.bind(this)}
           renderHeader={(props) => <TabBar onTabPress={this._handleTabItemPress} labelStyle={{ fontSize: 15, margin: 0, marginBottom: 10, paddingTop: 10, color: '#8696B0' }} indicatorStyle={{ backgroundColor: UColor.tintColor, width: 60, marginLeft: 20 }} style={{ backgroundColor: UColor.secdColor }} tabStyle={{ width: 100, padding: 0, margin: 0 }} scrollEnabled={true} {...props} />}
           onIndexChange={this._handleIndexChange}
           initialLayout={{ height: 0, width: Dimensions.get('window').width }}
-        />
+        /> 
+        }
       </View>
     );
   }

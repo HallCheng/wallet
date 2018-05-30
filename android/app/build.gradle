@@ -103,9 +103,9 @@ android {
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1
-        versionName "1.0.5"
+        versionName "1.0.6"
         manifestPlaceholders = [
-                JPUSH_APPKEY: "xxxxxxxxxxxxxxx",
+                JPUSH_APPKEY: "00c4f7dbd060f57fcdcfff10",
                 APP_CHANNEL : "default"
         ]
 
@@ -131,7 +131,7 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "CODEPUSH_KEY", '""'
+            buildConfigField "String", "CODEPUSH_KEY", '"nWLV6jUyyok4YcvHwit9bHKHoL8Od2d1e747-00dc-4337-91b1-dcf9377d3873"'
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
@@ -140,7 +140,7 @@ android {
             buildConfigField "String", "CODEPUSH_KEY", '""'
         }
         releaseStaging {
-            buildConfigField "String", "CODEPUSH_KEY", '""'
+            buildConfigField "String", "CODEPUSH_KEY", '"5XDy-Lte9q8xbt5dLcMtOyOTVKmgd2d1e747-00dc-4337-91b1-dcf9377d3873"'
         }
     }
     // applicationVariants are e.g. debug, release

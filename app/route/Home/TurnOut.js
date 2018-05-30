@@ -9,7 +9,7 @@ import UImage from '../../utils/Img'
 const maxHeight = Dimensions.get('window').height;
 import { EasyDialog } from "../../components/Dialog"
 import { EasyToast } from '../../components/Toast';
-
+import { EasyLoading } from '../../components/Loading';
 import { Eos } from "react-native-eosjs";
 
 var AES = require("crypto-js/aes");
@@ -136,6 +136,7 @@ class TurnOut extends React.Component {
                 EasyToast.show('请输入密码');
                 return;
             }
+            EasyLoading.show();
             var privateKey = this.props.defaultWallet.activePrivate;
             try {
                 var bytes_privateKey = CryptoJS.AES.decrypt(privateKey, this.state.password + this.props.defaultWallet.salt);
@@ -145,8 +146,10 @@ class TurnOut extends React.Component {
                     plaintext_privateKey = plaintext_privateKey.substr(8, plaintext_privateKey.length);
                     Eos.transfer(this.props.defaultWallet.account, this.state.toAccount, this.state.amount + " EOS", "", plaintext_privateKey, false, (r) => {
                         this.props.dispatch({
-                            type: 'wallet/pushTransaction', payload: r.data.transaction, callback: (data) => {
-                                if (data.code == '0') {
+                            // type: 'wallet/pushTransaction', payload: { to: this.state.toAccount, amount: this.state.amount, from: this.props.defaultWallet.account, data: r.data.transaction }, callback: (data) => {
+                            type: 'wallet/pushTransaction', payload: { to: this.state.toAccount, amount: this.state.amount, from: this.props.defaultWallet.account, data: JSON.stringify(r.data.transaction) }, callback: (result) => {
+                                EasyLoading.dismis();
+                                if (result.code == '0') {
                                     EasyToast.show('交易成功');
                                     DeviceEventEmitter.emit('transaction_success');
                                     this.props.navigation.goBack();
@@ -159,9 +162,11 @@ class TurnOut extends React.Component {
                     //     }
                     // });
                 } else {
+                    EasyLoading.dismis();
                     EasyToast.show('密码错误');
                 }
             } catch (e) {
+                EasyLoading.dismis();
                 EasyToast.show('密码错误');
             }
             EasyDialog.dismis();
@@ -182,12 +187,17 @@ class TurnOut extends React.Component {
         return obj;
     }
 
+    clearFoucs = () => {
+        this._raccount.blur();
+        this._lpass.blur();
+    }
+
     render() {
         const c = this.props.navigation.state.params.coins;
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={{ fontSize: 20, color: '#fff' }}>{this.state.balance + ' ' + this.state.name}</Text>
+                    <Text style={{ fontSize: 20, color: '#fff' }}>{this.state.balance}</Text>
                     {/* <Text style={{ fontSize: 14, color: '#8696B0', marginTop: 5 }}>≈ {c.value} ￥</Text> */}
                 </View>
 
@@ -196,22 +206,25 @@ class TurnOut extends React.Component {
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#586888', marginBottom: 10, paddingLeft: 10, }}>
                             <View style={{ height: 40, flex: 1, justifyContent: 'center', }} >
                                 <TextInput value={this.state.toAccount}
+                                    ref={(ref) => this._raccount = ref}
                                     onChangeText={(toAccount) => this.setState({ toAccount })}
                                     returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }}
-                                    placeholderTextColor="#8696B0" placeholder="收款人地址" underlineColorAndroid="transparent" />
+                                    placeholderTextColor="#8696B0" placeholder="收款人账号" underlineColorAndroid="transparent" />
                             </View>
                         </View>
                         <View style={{ height: 0.5, backgroundColor: '#43536D' }}></View>
                         <View style={{ paddingLeft: 10, height: 40, marginBottom: 10, borderBottomWidth: 1, borderBottomColor: '#586888', justifyContent: 'center', }} >
                             <TextInput value={this.state.amount}
+                                ref={(ref) => this._ramount = ref}
                                 onChangeText={(amount) => this.setState({ amount: this.chkPrice(amount) })}
-                                returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="转账金额" underlineColorAndroid="transparent" keyboardType="numeric" maxLength={10} />
+                                returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="转账金额" underlineColorAndroid="transparent" keyboardType="numeric" />
                         </View>
                         <View style={{ height: 0.5, backgroundColor: '#43536D' }}></View>
 
                         <View style={{ paddingLeft: 10, height: 40, marginBottom: 10, borderBottomWidth: 1, borderBottomColor: '#586888', justifyContent: 'center', }} >
                             <TextInput value={this.state.note}
                                 onChangeText={(note) => this.setState({ note })}
+                                ref={(ref) => this._rnote = ref}
                                 returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2, }} placeholderTextColor="#8696B0" placeholder="备注" underlineColorAndroid="transparent" maxLength={20} />
                         </View>
                         <View style={{ height: 0.5, backgroundColor: '#43536D' }}></View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing } from 'react-native';
+import { DeviceEventEmitter, ListView, StyleSheet, Image, View, Text, Platform, Modal, Animated, TouchableOpacity, Easing, Clipboard } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import store from 'react-native-simple-store';
 import UColor from '../../utils/Colors'
@@ -63,11 +63,13 @@ class Home extends React.Component {
         type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.name, symbol: 'EOS' }, callback: (data) => {
           if (data.code == '0') {
             if (data.data == "") {
-              this.setState({ balance: '0.0000 EOS',
-            account:this.props.defaultWallet.name
-            })
+              this.setState({
+                balance: '0.0000 EOS',
+                account: this.props.defaultWallet.name
+              })
             } else {
-              this.setState({ balance: data.data })
+              account: this.props.defaultWallet.name,
+                this.setState({ balance: data.data })
             }
           } else {
             EasyToast.show('获取余额失败：' + data.msg);
@@ -75,12 +77,12 @@ class Home extends React.Component {
         }
       })
     } else {
-      this.setState({ balance: '0.0000 EOS' })
+      this.setState({ balance: '0.0000 EOS', account: 'xxxx' })
       // this.props.defaultWallet.name = 'xxxx';
-      EasyDialog.show("温馨提示", "您还没有创建钱包", "创建一个", "取消", () => {
-        this.createWallet();
-        EasyDialog.dismis()
-      }, () => { EasyDialog.dismis() });
+      //   EasyDialog.show("温馨提示", "您还没有创建钱包", "创建一个", "取消", () => {
+      //   this.createWallet();
+      //   EasyDialog.dismis()
+      // }, () => { EasyDialog.dismis() });
     }
   }
 
@@ -126,7 +128,12 @@ class Home extends React.Component {
   }
 
   copy = () => {
-    let address = this.props.defaultWallet.account;
+    let address;
+    if (this.props.defaultWallet != null && this.props.defaultWallet.account != null) {
+      address = this.props.defaultWallet.account;
+    } else {
+      address = this.state.account;
+    }
     Clipboard.setString(address);
     EasyToast.show("复制成功");
   }
@@ -267,7 +274,7 @@ class Home extends React.Component {
                   }
                   {
                     this.props.total != undefined && (<View style={styles.totalbg}>
-                      <Button onPress={() => this.getBalance()}>
+                      <Button>
                         <View style={{ width: 200, height: 200, justifyContent: "center", alignItems: "center" }}>
                           <Text style={{ fontSize: 14, color: '#fff' }}>{(this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name}</Text>
                           <Text style={{ fontSize: 21, color: '#fff', marginTop: 15, marginBottom: 15 }}>{this.state.balance}</Text>
