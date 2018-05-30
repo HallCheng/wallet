@@ -4,7 +4,7 @@ an eos wallet
 cd wallet <br> 
 npm i <br> 
 
-### fix react-native-smart-barcode build bug:<br>
+### fix react-native-smart-barcode build error:<br>
 /node_modules/react-native-smart-barcode/Barcode.js<br>
 
 error:<br>
