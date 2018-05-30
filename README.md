@@ -1,4 +1,4 @@
-a open resource eos wallet
+an eos wallet
 
 ## Build project:<br> 
 cd wallet <br> 
