@@ -107,9 +107,11 @@ class Set extends React.Component {
                     EasyToast.show('生成账号失败：' + data.error);
                   } else {
                     EasyToast.show('生成账号成功：');
+                    DeviceEventEmitter.emit('updateDefaultWallet');
                     this.props.navigation.goBack();
                     const { navigate } = this.props.navigation;
                     navigate('BackupNote', data);
+                    
                   }
                 }
               });
