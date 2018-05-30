@@ -252,7 +252,7 @@ class Home extends React.Component {
                           <Text style={{ width: 30, height: 30, marginBottom: 0, color: '#CBCBCB', fontSize: 28, }}>×</Text>
                         </Button>
                         <Text style={styles.titleText}>收款码</Text>
-                        <Text style={styles.contentText}>{this.state.account}</Text>
+                        <Text style={styles.contentText}>{((this.props.defaultWallet == null || this.props.defaultWallet.name == null) ? this.state.account : this.props.defaultWallet.name)}</Text>
                         <Text style={{ color: '#F45353', fontSize: 12, textAlign: 'center', }}>提示：扫码同样可获取地址</Text>
                         <View style={{ margin: 10, alignItems: 'center', justifyContent: 'center', alignItems: 'center', flexDirection: "row", }}>
                           <View style={{ flex: 1, }} />
