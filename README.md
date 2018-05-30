@@ -1,14 +1,14 @@
-# wallet
-a open resource eos wallet
+an eos wallet
 
-Build:
-cd wallet 
-npm i
+## Build project:<br> 
+cd wallet <br> 
+npm i <br> 
 
-modify react-native-smart-barcode build error:
-/node_modules/react-native-smart-barcode/Barcode.js
+### fix react-native-smart-barcode build error:<br>
+/node_modules/react-native-smart-barcode/Barcode.js<br>
 
-error:
+error:<br>
+``` javascript
 import React, {
     PropTypes,
     Component,
@@ -20,8 +20,10 @@ import {
     AppState,
     Platform,
 } from 'react-native'
+```
 
-correct:
+correct:<br>
+``` javascript
 import React, {
     Component,
 } from 'react'
@@ -33,12 +35,14 @@ import {
     Platform,
 } from 'react-native'
 import PropTypes from 'prop-types'
+```
 
-android:
-npm run android
+### run android:<br>
+npm run android/react-native run-android
 
-ios:
-npm run ios
+### run ios:<br>
+npm run ios/react-native run-ios
 
-npm version:3.10.10
-node version:v6.11.2
+<br>
+npm version:3.10.10 <br>
+node version:v6.11.2 <br>
