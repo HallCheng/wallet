@@ -24,7 +24,7 @@ const init = (navigation) => {
                 }else if(extras.url.startsWith("alert://")){
                     EasyDialog.show("温馨提示",map.alertContent,"知道了",null,()=>{EasyDialog.dismis()});
                 }else{
-                    
+
                 }
             }
         });
@@ -41,7 +41,7 @@ const init = (navigation) => {
             DeviceEventEmitter.emit('wallet_info')
         }
     });
-    //点击通知点击通知
+    //点击通知
     JPushModule.addReceiveOpenNotificationListener(map => {
         let extras = JSON.parse(map.extras);
         if (extras && extras.url) {

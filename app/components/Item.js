@@ -65,6 +65,7 @@ export default class Item extends Component {
     onPress: PropTypes.func,
     swt:PropTypes.string,
   }
+
   _render(){
     let {swt,icon, iconSize, name, subName, color, first, avatar, disable, font} = this.props
     font = font||"Ionicons"

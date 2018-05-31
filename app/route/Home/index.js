@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
   },
   // modal的样式  
   modalStyle: {
-    // backgroundColor:'#ccc',  
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',  
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,

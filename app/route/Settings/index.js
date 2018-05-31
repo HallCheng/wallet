@@ -27,7 +27,7 @@ class Setting extends React.Component {
       { name: "邀请注册", onPress: this.goPage.bind(this, "share") },
       { name: "权益股票", onPress: this.goPage.bind(this, "Test") },
       { name: "密钥恢复", onPress: this.goPage.bind(this, "Test") },
-      { first: true, disable: true, name: "消息推送", swt: 'off' }
+      { first: true, disable: true, name: "消息推送", swt: 'off'}
     ];
   }
 
@@ -45,7 +45,9 @@ class Setting extends React.Component {
       navigate('WalletManage', {});
     }else if (key == 'set') {
       navigate('Set', {});
-    } else {
+    } else  if (key == 'Test') {
+      alert(this.config.swt);     
+    } else{
       EasyDialog.show("温馨提示", "该功能将于EOS主网上线后开通。", "知道了", null, () => { EasyDialog.dismis() });
     }
   }

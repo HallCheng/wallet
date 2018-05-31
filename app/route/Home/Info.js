@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
     },
     // modal上子View的样式  
     subView: {
