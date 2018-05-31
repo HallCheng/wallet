@@ -4,6 +4,7 @@ import store from 'react-native-simple-store';
 import { EasyToast } from '../components/Toast';
 import Constants from '../utils/Constants'
 import JPushModule from 'jpush-react-native';
+import JPush from 'jpush-react-native';
 
 export default {
   namespace: 'login',
@@ -141,6 +142,21 @@ export default {
         // alert("error: " + error.msg);
         if (callback) callback({ code: 500, msg: "网络异常" });
       }
+    },
+    *changeJpush({ payload,callback }, { call, put }) {
+      var jpush = yield call(store.get, 'jpush');        
+      if (jpush == null) {
+        jpush = false;              
+      }else{
+        jpush = !jpush;
+      }
+      yield call(store.save, 'jpush', jpush);
+    },*getJpush({ payload,callback }, { call, put }) {
+      var jpush = yield call(store.get, 'jpush');
+      if (jpush == null) {
+        jpush = false;              
+      }
+      if (callback) callback({ jpush: jpush });
     },
   },
   // *fetchPoint({ payload }, { call, put }) {

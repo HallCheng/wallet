@@ -126,6 +126,7 @@ class Home extends React.Component {
     } else {
       address = this.state.account;
     }
+    this._setModalVisible();
     Clipboard.setString(address);
     EasyToast.show("复制成功");
   }

@@ -47,7 +47,14 @@ class TurnOut extends React.Component {
             amount: params.amount == null ? '' : params.amount,
             name: params.name,
         })
+        DeviceEventEmitter.addListener('scan_result', (data) => {
+            this.setState({toAccount:data.toaccount})
+          });
     }
+
+    componentWillUnmount(){
+        DeviceEventEmitter.removeListener('scan_result');
+      }
 
     getBalance(data) {
         this.props.dispatch({
@@ -191,6 +198,10 @@ class TurnOut extends React.Component {
         this._raccount.blur();
         this._lpass.blur();
     }
+    scan() {
+          const { navigate } = this.props.navigation;
+          navigate('BarCode', {isTurnOut:true});
+      }
 
     render() {
         const c = this.props.navigation.state.params.coins;
@@ -204,12 +215,17 @@ class TurnOut extends React.Component {
                 <View style={styles.tab2}>
                     <View style={{ backgroundColor: '#43536D', flexDirection: 'column', padding: 20, flex: 1, }}>
                         <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#586888', marginBottom: 10, paddingLeft: 10, }}>
-                            <View style={{ height: 40, flex: 1, justifyContent: 'center', }} >
+                            <View style={{ height: 40, flex: 1, justifyContent: 'center',flexDirection: "row", }} >
                                 <TextInput value={this.state.toAccount}
                                     ref={(ref) => this._raccount = ref}
                                     onChangeText={(toAccount) => this.setState({ toAccount })}
-                                    returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }}
+                                    returnKeyType="next" selectionColor="#65CAFF" style={{ flex:1, color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }}
                                     placeholderTextColor="#8696B0" placeholder="收款人账号" underlineColorAndroid="transparent" />
+                               <View style={{ width:30, flexDirection: "row", alignSelf: 'center', justifyContent: "flex-end", marginRight: 10 }}>
+                                    <Button onPress={() => this.scan()}>                                  
+                                        <Image source={UImage.scan} style={{width:30,height:30,justifyContent: 'center', alignItems: 'center'}} />                                 
+                                    </Button>
+                                </View>
                             </View>
                         </View>
                         <View style={{ height: 0.5, backgroundColor: '#43536D' }}></View>

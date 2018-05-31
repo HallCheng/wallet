@@ -8,6 +8,7 @@ import {
     Platform,
     StyleSheet,
     Text,
+    DeviceEventEmitter,
     View,
     Alert
 } from 'react-native';
@@ -20,14 +21,20 @@ import PropTypes from 'prop-types'
 export default class App extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
-
     }
+
+    static navigationOptions = {
+        title: '扫码转账'
+      };
+
 
     //构造方法
     constructor(props) {
         super(props);
         this.state = {
             viewAppear: false,
+            show: false,
+            isTurnOut: this.props.navigation.state.params.isTurnOut == null ? false : this.props.navigation.state.params.isTurnOut,
         };
     }
     componentDidMount() {
@@ -49,10 +56,15 @@ export default class App extends React.Component {
         try {
             var coins = JSON.parse(e.nativeEvent.data.code);
             if (coins.toaccount != null) {
-                const { navigate } = this.props.navigation;
                 coins.name = coins.symbol;
                 this.props.navigation.goBack();
-                navigate('TurnOut', { coins: coins });
+                if(this.state.isTurnOut){
+                    DeviceEventEmitter.emit('scan_result',coins);
+                }else{
+                    const { navigate } = this.props.navigation;
+                    navigate('TurnOut', { coins: coins });
+                }
+                
             } else {
                 EasyToast.show('无效的二维码');
             }

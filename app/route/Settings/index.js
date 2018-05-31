@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar } from 'react-native';
+import { Dimensions, DeviceEventEmitter, InteractionManager, ListView, StyleSheet, View, RefreshControl, Text, ScrollView, Image, Platform, StatusBar, Switch } from 'react-native';
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view';
 import UColor from '../../utils/Colors'
 import Button from '../../components/Button'
@@ -10,26 +10,64 @@ import UImage from '../../utils/Img'
 import { EasyLoading } from '../../components/Loading';
 import { EasyToast } from '../../components/Toast';
 import { EasyDialog } from '../../components/Dialog';
+import JPush from 'jpush-react-native';
 var DeviceInfo = require('react-native-device-info');
+export var jpushSwitch = false;
+import JPushModule from 'jpush-react-native';
 
-@connect(({ login }) => ({ ...login }))
+@connect(({ login,jPush }) => ({ ...login,...JPush }))
 class Setting extends React.Component {
 
   static navigationOptions = {
     title: '我的'
   };
+  
 
   constructor(props) {
     super(props);
+    this.state = {
+      value: false,
+      disabled: false,
+      changeTxt:'切换Switch',
+    }
+    
     this.config = [
       { first: true, name: "钱包管理", onPress: this.goPage.bind(this, "WalletManage") },
       { name: "系统设置", onPress: this.goPage.bind(this, "set") },
       { name: "邀请注册", onPress: this.goPage.bind(this, "share") },
       { name: "权益股票", onPress: this.goPage.bind(this, "Test") },
       { name: "密钥恢复", onPress: this.goPage.bind(this, "Test") },
-      { first: true, disable: true, name: "消息推送", swt: 'off'}
+      // { first: true, disable: true, name: '消息推送', swt: this.state.openMsg,}
     ];
+
+    
   }
+
+    //组件加载完成
+    componentDidMount() {
+      const {dispatch}=this.props;
+      dispatch({type:'login/getJpush',callback:(jpush)=>{
+        this.setState({
+          value:jpush.jpush,
+        });
+      }});
+    }
+
+    changeJpush(state){
+      const {dispatch}=this.props;
+      dispatch({type:'login/changeJpush',callback:(jpush)=>{
+        this.setState({
+          value:jpush,
+        });
+      }});
+      if(state){
+        JPushModule.addTags(['newsmorningbook'], map => {
+        })
+      }else{
+        JPushModule.deleteTags(['newsmorningbook'], map => {
+        });
+      }
+    }
 
   goPage(key, data = {}) {
     const { navigate } = this.props.navigation;
@@ -46,7 +84,9 @@ class Setting extends React.Component {
     }else if (key == 'set') {
       navigate('Set', {});
     } else  if (key == 'Test') {
-      alert(this.config.swt);     
+      JPushModule.addTags(['yug'], map => {
+
+      })
     } else{
       EasyDialog.show("温馨提示", "该功能将于EOS主网上线后开通。", "知道了", null, () => { EasyDialog.dismis() });
     }
@@ -113,6 +153,20 @@ class Setting extends React.Component {
           <View>
             {this._renderListItem()}
           </View>
+          <View style={{height:60, backgroundColor: UColor.mainColor, flexDirection: "row", justifyContent: "center", alignItems: "center",}}>
+             <View style={styles.listInfo}>
+                <View style={{flex: 1}}><Text style={{color:UColor.fontColor, fontSize:16}}>消息推送</Text></View>
+                <View style={styles.listInfoRight}>
+                  <Switch  tintColor={UColor.secdColor} onTintColor={UColor.tintColor} thumbTintColor="#ffffff"
+                      value={this.state.value} onValueChange={(value)=>{
+                      this.setState({
+                          value:value,
+                      });
+                      this.changeJpush(value);
+                  }}/>
+                </View>
+              </View>
+          </View>
           <View style={{ flex: 1, marginTop: 15, flexDirection: 'column' }}>
             <Text style={{ fontSize: 10, color: '#8696B0', width: '100%', textAlign: 'center' }}>© 2018 eostoken all rights reserved </Text>
             <Text style={{ fontSize: 10, color: '#8696B0', width: '100%', textAlign: 'center', marginTop: 5 }}>EOS专业版钱包 V{DeviceInfo.getVersion()}(1)</Text>
@@ -149,6 +203,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'normal',
     color: UColor.fontColor
+  },
+  listInfo: {
+    height: 60,
+    flex: 1,
+    paddingLeft: 16,
+    paddingRight: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderTopWidth:1,
+    borderTopColor: UColor.secdColor
+  },
+  listInfoRight: {
+    flexDirection: "row",
+    alignItems: "center"
   }
 });
 

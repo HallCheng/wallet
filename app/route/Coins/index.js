@@ -62,7 +62,9 @@ class Coins extends React.Component {
    });
    //推送初始化
    const { navigate } = this.props.navigation;
-   JPush.init(navigate);
+   DeviceEventEmitter.addListener('changeTab', (tab) => {
+    const { navigate } = this.props.navigation;
+  })
   }
 
   componentWillUnmount(){
