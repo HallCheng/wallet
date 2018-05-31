@@ -228,7 +228,7 @@ class TurnOut extends React.Component {
                                 returnKeyType="next" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2, }} placeholderTextColor="#8696B0" placeholder="备注" underlineColorAndroid="transparent" maxLength={20} />
                         </View>
                         <View style={{ height: 0.5, backgroundColor: '#43536D' }}></View>
-                        <Button onPress={this._rightButtonClick.bind(this)} style={{ height: 85, marginTop: 200, }}>
+                        <Button onPress={this._rightButtonClick.bind(this)} style={{ height: 85, marginTop: 60, }}>
                             <View style={{ height: 45, backgroundColor: '#65CAFF', justifyContent: 'center', alignItems: 'center', margin: 20, borderRadius: 5 }}>
                                 <Text style={{ fontSize: 15, color: '#fff' }}>下一步</Text>
                             </View>

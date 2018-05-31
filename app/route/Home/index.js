@@ -55,34 +55,26 @@ class Home extends React.Component {
       this.props.dispatch({ type: 'wallet/info', payload: { address: "1111" } });
       this.getBalance();
     });
+    setInterval( ()  =>{
+      this.getBalance()
+    },10000)
   }
 
-  getBalance() {
+  getBalance() { 
     if (this.props.defaultWallet != null && this.props.defaultWallet.name != null) {
       this.props.dispatch({
         type: 'wallet/getBalance', payload: { contract: "eosio.token", account: this.props.defaultWallet.name, symbol: 'EOS' }, callback: (data) => {
           if (data.code == '0') {
             if (data.data == "") {
-              this.setState({
-                balance: '0.0000 EOS',
-                account: this.props.defaultWallet.name
-              })
+              this.setState({ balance: '0.0000 EOS' })
             } else {
-              account: this.props.defaultWallet.name,
-                this.setState({ balance: data.data })
+              this.setState({ balance: data.data })
             }
           } else {
             EasyToast.show('获取余额失败：' + data.msg);
           }
         }
       })
-    } else {
-      this.setState({ balance: '0.0000 EOS', account: 'xxxx' })
-      // this.props.defaultWallet.name = 'xxxx';
-      //   EasyDialog.show("温馨提示", "您还没有创建钱包", "创建一个", "取消", () => {
-      //   this.createWallet();
-      //   EasyDialog.dismis()
-      // }, () => { EasyDialog.dismis() });
     }
   }
 
@@ -209,7 +201,7 @@ class Home extends React.Component {
                   </Button>
                 </View>
                 <Modal animationType={'none'} transparent={true} onRequestClose={() => { this.onRequestClose() }} visible={this.state.modal}>
-                  <TouchableOpacity onPress={() => this.setState({ modal: false })} style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
+                  <TouchableOpacity onPress={() => this.setState({ modal: false })} style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', backgroundColor: 'rgba(0, 0, 0, 0.4)', }}>
                     <View style={{ width: ScreenWidth / 2, height: maxHeight, backgroundColor: '#4D607E', alignItems: 'center', paddingTop: 50, }}>
                       <ListView
                         initialListSize={5}

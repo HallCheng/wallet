@@ -45,8 +45,8 @@ class Set extends React.Component {
       EasyToast.show('请输入钱包名称');
       return;
     }
-    if (this.state.walletName.length > 12) {
-      EasyToast.show('EOS账户长度不能超过12位');
+    if(!/^[1-5a-z.]+$/.test(this.state.walletName)){
+      EasyToast.show("钱包名称只能输入小写字母a-z和数字1-5");
       return;
     }
     if (this.state.walletPassword == "") {
@@ -94,11 +94,9 @@ class Set extends React.Component {
         result.password = this.state.walletPassword;
         result.name = this.state.walletName;
         result.account = this.state.walletName;
-        // alert('seedPrivateKey: '+JSON.stringify(result));
         this.props.dispatch({
           type: 'wallet/createAccountService', payload: { username: result.account, owner: result.data.ownerPublic, active: result.data.activePublic }, callback: (data) => {
             EasyLoading.dismis();
-            // alert(JSON.stringify(data));
             if (data.code == '0') {
               this.props.dispatch({
                 type: 'wallet/saveWallet', wallet: result, callback: (data) => {
@@ -130,18 +128,6 @@ class Set extends React.Component {
     DeviceEventEmitter.addListener('wallet_10', () => {
       EasyToast.show('您不能创建更多钱包账号了');
     });
-    // DeviceEventEmitter.addListener('wallet_backup', (data) => {
-
-    // });
-  }
-
-
-  chkPrice(obj) {
-    var reg = /^[a-z]+$/;
-    if (!reg.test(obj)) {
-      obj = obj.substr(0, obj.length - 1);
-    };
-    return obj;
   }
 
   getRandomWords() {
@@ -157,22 +143,6 @@ class Set extends React.Component {
     return words;
   }
 
-  newAccount() {
-    // this.props.dispatch({
-    //   type: 'wallet/createAccountService', payload: {
-    //     username: 'tt', owner: 'EOS7jNzbYDrNbJYAWxRVFtmz1TSeRZK5qpwBCmEwKKn48rqt8orUN',
-    //     active: 'EOS5aJxhh7zqcFpnK4Zy3XPGkFGEyVzdNghiVcfYsj4KCeACisuAY'
-    //   }, callback: (data) => {
-    //     alert(JSON.stringify(data));
-    //   }
-    // })
-    // this.props.dispatch({
-    //   type: 'wallet/getBalance', payload: { contract: "eosio.token", account: 'moling', symbol: 'EOS' }, callback: (data) => {
-    //     alert(JSON.stringify(data));
-    //   }
-    // })
-
-  }
 
   getAccountInfo() {
     Eos.balance("eosio.token", "morning", (r) => {
@@ -194,7 +164,6 @@ class Set extends React.Component {
 
   transfer() {
     Eos.transfer("tt", "marco", "1.0000 EOS", "", "5JqqwFTALaJPVtSRNhsVFFN5de7d6j239YSVDMeKfNHXYc5F2oP", false, (r) => {
-      // Eos.transfer("sbtc1", "alice", "1.0000 EOS", "", "5KU35XDjUmMKCLybK9xyx88ygSsDscUDk7hLGqvqPSUkFxTEFLF", false, (r) => {
       alert(JSON.stringify(r));
       this.props.dispatch({
         type: 'wallet/pushTransaction', payload: r.data.transaction, callback: (data) => {
@@ -235,40 +204,35 @@ class Set extends React.Component {
 
   render() {
     return <View style={styles.container}>
-      {/* <ScrollView style={styles.scrollView}> */}
       <View>
         <Text style={styles.welcome} style={{ color: '#8696B0', marginTop: 10, marginLeft: 10 }}>重要声明:</Text>
         <Text style={styles.welcome} style={{ color: '#8696B0', marginTop: 10, marginLeft: 10 }}>密码用于保护私钥和交易授权，强度非常重要</Text>
         <Text style={styles.welcome} style={{ color: '#8696B0', marginBottom: 10, marginLeft: 10 }}>EosToken不存储密码，也无法帮您找回，请务必牢记</Text>
-        <View style={{ backgroundColor: '#43536D' }}>
-          <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
+        <View style={{ backgroundColor: '#586888', paddingBottom: 5,}}>
+          <View style={{ padding: 20, height: 55,   borderBottomWidth: 1, borderBottomColor: UColor.secdColor,}} >
             <TextInput returnKeyType="next" selectionColor="#65CAFF"
               ref={(ref) => this._raccount = ref}
-              style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="账号名称(只能输入小写字母)"
-              underlineColorAndroid="transparent" keyboardType="default"
-              // onChangeText={(walletName) => this.setState({ walletName })}
+              style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0" placeholder="账号名称(只能输入12位小写字母a-z及数字1-5)"
+              underlineColorAndroid="transparent" keyboardType="default" maxLength={12}
               value={this.state.walletName}
-              onChangeText={(walletName) => this.setState({ walletName: this.chkPrice(walletName) })}
+              onChangeText={(walletName) => this.setState({ walletName })}
             />
           </View>
-          <View style={{ height: 0.5, backgroundColor: '#43536D', flex: 1, flexDirection: 'column' }}></View>
-          <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
+          <View style={{ padding: 20, height: 55,  borderBottomWidth: 1, borderBottomColor: UColor.secdColor,}} >
             <TextInput ref={(ref) => this._lpass = ref} autoFocus={false} editable={true}
               returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0"
               placeholder="密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
               onChangeText={(walletPassword) => this.setState({ walletPassword })}
             />
           </View>
-          <View style={{ height: 0.5, backgroundColor: '#43536D', flex: 1, flexDirection: 'column', }}></View>
-          <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
+          <View style={{ padding: 20, height: 55,  borderBottomWidth: 1, borderBottomColor: UColor.secdColor, }} >
             <TextInput ref={(ref) => this._lrpass = ref} autoFocus={false} editable={true}
               returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0"
               placeholder="重复密码" underlineColorAndroid="transparent" secureTextEntry={true} maxLength={20}
               onChangeText={(reWalletPassword) => this.setState({ reWalletPassword })}
             />
           </View>
-          <View style={{ height: 0.5, backgroundColor: '#43536D', flex: 1, flexDirection: 'column', }}></View>
-          <View style={{ padding: 20, height: 55, backgroundColor: '#586888' }} >
+          <View style={{ padding: 20, height: 55,   borderBottomWidth: 1, borderBottomColor: UColor.secdColor, }} >
             <TextInput ref={(ref) => this._lnote = ref} autoFocus={false} editable={true}
               value={this.state.passwordNote}
               returnKeyType="go" selectionColor="#65CAFF" style={{ color: '#8696B0', fontSize: 15, height: 40, paddingLeft: 2 }} placeholderTextColor="#8696B0"
@@ -291,7 +255,6 @@ class Set extends React.Component {
           </View>
         </Button>
       </View>
-      {/* </ScrollView> */}
     </View>
   }
 }

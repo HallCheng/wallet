@@ -144,7 +144,7 @@ class Info extends React.Component {
                                 </Button>
                                 <Text style={styles.titleText}>你的{c.name}地址</Text>
                                 <Text style={styles.contentText}>{this.props.defaultWallet == null ? '' : this.props.defaultWallet.account}</Text>
-                                <Text style={{ color: '#F45353', fontSize: 12, marginLeft: 15, textAlign: 'left', }}>提示：扫码同样可获取地址</Text>
+                                <Text style={{ color: '#F45353', fontSize: 12, marginLeft: 15, textAlign: 'center', }}>提示：扫码同样可获取地址</Text>
                                 <View style={{ margin: 10, alignItems: 'center', justifyContent: 'center', alignItems: 'center', flexDirection: "row", }}>
                                     <View style={{ flex: 1, }} />
                                     {/* <QRCode size={170} style={{ width: 170, }} value={{'contract':'eos','toaccount':this.props.defaultWallet.account,'symbol':'EOS'}} /> */}
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
     contentText: {
         marginLeft: 15,
         fontSize: 12,
-        textAlign: 'left',
+        textAlign: 'center',
     },
     // 按钮  
     buttonView: {
